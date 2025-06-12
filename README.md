@@ -77,10 +77,16 @@ tradingview-alerts-to-metatrader5/
    ```bash
    pip install -r requirements.txt
       ```
+   3.1 **if it error**:
+   ```bash
+   cd C:\Users\User\Downloads\1234
+   pip install -r requirements.txt
+
+      ```
 
 4. **Configure environment variables**:
    ```bash
-   cp .env.example .env
+   copy .env.example .env
    ```
 
 5. **Edit the `.env` file** with your MT5 account details and broker settings:
