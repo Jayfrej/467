@@ -60,7 +60,7 @@ tradingview-alerts-to-metatrader5/
 1. **Clone the repository**: open CMD
    ```bash
    cd %HOMEPATH%\Downloads
-   git clone https://github.com/Jayfrej/TV2-MT5.git
+   git clone https://github.com/Jayfrej/1234.git
    cd Tv2-MT5
    ```
 
