@@ -64,7 +64,7 @@ tradingview-alerts-to-metatrader5/
    cd 1234
    ```
 
-2. **Create a virtual environment**:
+2. **Create a virtual environment**:if (The system cannot find the path specified) put it again
    ```bash
    python -m venv venv
    ```
