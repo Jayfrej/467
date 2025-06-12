@@ -2,9 +2,11 @@
 
 This project enables automated trading by connecting TradingView alerts to MetaTrader 5. It creates a local web server that receives webhook notifications from TradingView and executes trades in MT5 based on the parameters provided in the alert.
 
+
 ## Architecture
 
-<img src="docs/images/architecture-diagram.svg" alt="TradingView to MT5 Integration Architecture">
+![Screenshot 2025-06-13 000921](https://github.com/user-attachments/assets/dd4d86f8-e871-4b48-ada2-a4f1c00ef3bf)
+
 
 ## Key Features
 
