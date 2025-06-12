@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 from .config import (
     MT5_ACCOUNT, MT5_PASSWORD, MT5_SERVER, MT5_PATH,
-    DEFAULT_VOLUME, DEFAULT_STOP_LOSS, DEFAULT_TAKE_PROFIT,
+    DEFAULT_VOLUME,
     MT5_DEFAULT_SUFFIX
 )
 
@@ -135,9 +135,48 @@ class MT5Handler:
         symbol_names = [s.name for s in all_symbols]
         return symbol_names
     
+    def close_all_positions(self, symbol=None):
+        """
+        Close all open positions for a specific symbol or all symbols
+        
+        Args:
+            symbol (str, optional): Symbol to close positions for. If None, closes all positions.
+            
+        Returns:
+            dict: Result summary of close operations
+        """
+        if not self.check_connection():
+            return {"success": False, "message": "MT5 connection failed"}
+        
+        positions = self.get_positions(symbol)
+        if not positions:
+            return {"success": True, "message": "No positions to close", "closed_count": 0}
+        
+        closed_count = 0
+        failed_count = 0
+        results = []
+        
+        for position in positions:
+            result = self.close_position(position['ticket'])
+            results.append(result)
+            if result['success']:
+                closed_count += 1
+            else:
+                failed_count += 1
+        
+        logger.info(f"Closed {closed_count} positions, {failed_count} failed for symbol: {symbol}")
+        
+        return {
+            "success": failed_count == 0,
+            "message": f"Closed {closed_count} positions, {failed_count} failed",
+            "closed_count": closed_count,
+            "failed_count": failed_count,
+            "details": results
+        }
+
     def place_trade(self, symbol, order_type, volume=DEFAULT_VOLUME, 
-                   price=0.0, stop_loss=DEFAULT_STOP_LOSS, 
-                   take_profit=DEFAULT_TAKE_PROFIT, comment="TV Signal"):
+                   price=0.0, stop_loss=None, take_profit=None, comment="TV Signal", 
+                   close_existing=True):
         """
         Place a trade in MT5
         
@@ -146,15 +185,27 @@ class MT5Handler:
             order_type (str): Order type ('BUY', 'SELL', 'LONG', 'SHORT')
             volume (float): Trade volume in lots
             price (float): Order price (0 for market order)
-            stop_loss (float): Stop loss in points
-            take_profit (float): Take profit in points
+            stop_loss (float, optional): Ignored - kept for backward compatibility
+            take_profit (float, optional): Ignored - kept for backward compatibility
             comment (str): Order comment
+            close_existing (bool): Whether to close existing positions before opening new one
             
         Returns:
             dict: Result of the order operation
         """
         if not self.check_connection():
             return {"success": False, "message": "MT5 connection failed"}
+        
+        # Close existing positions for this symbol if requested
+        if close_existing:
+            logger.info(f"Closing existing positions for {symbol} before placing new order")
+            close_result = self.close_all_positions(symbol)
+            logger.info(f"Close result: {close_result['message']}")
+        
+        # Add a small delay after closing positions to ensure they're processed
+        import time
+        if close_existing:
+            time.sleep(0.5)  # 500ms delay
         
         # Check if the symbol already has the suffix
         if MT5_DEFAULT_SUFFIX and not symbol.endswith(MT5_DEFAULT_SUFFIX):
@@ -183,9 +234,6 @@ class MT5Handler:
             if not mt5.symbol_select(mt5_symbol, True):
                 return {"success": False, "message": f"Failed to select symbol {mt5_symbol}"}
         
-        # Prepare order request
-        point = symbol_info.point
-        
         # Get current tick data
         tick = mt5.symbol_info_tick(mt5_symbol)
         if tick is None:
@@ -194,30 +242,24 @@ class MT5Handler:
         # Log tick information for debugging
         logger.info(f"Current {mt5_symbol} prices - Bid: {tick.bid}, Ask: {tick.ask}")
         
-        # Set order type
+        # Set order type and price
         if order_type.upper() in ["BUY", "LONG"]:
             mt5_order_type = mt5.ORDER_TYPE_BUY
             current_price = tick.ask
-            sl = current_price - stop_loss * point if stop_loss > 0 else 0
-            tp = current_price + take_profit * point if take_profit > 0 else 0
         elif order_type.upper() in ["SELL", "SHORT"]:
             mt5_order_type = mt5.ORDER_TYPE_SELL
             current_price = tick.bid
-            sl = current_price + stop_loss * point if stop_loss > 0 else 0
-            tp = current_price - take_profit * point if take_profit > 0 else 0
         else:
             return {"success": False, "message": f"Invalid order type: {order_type}"}
         
-        # Create request structure for market order
+        # Create request structure for market order (without TP/SL)
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
-            "symbol": mt5_symbol,  # Use symbol with suffix
+            "symbol": mt5_symbol,
             "volume": float(volume),
             "type": mt5_order_type,
             "price": current_price,
-            "sl": sl,
-            "tp": tp,
-            "deviation": 30,  # Increased deviation for more tolerance
+            "deviation": 30,
             "magic": 234000,
             "comment": comment,
             "type_time": mt5.ORDER_TIME_GTC,
