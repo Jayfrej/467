@@ -61,7 +61,7 @@ tradingview-alerts-to-metatrader5/
    ```bash
    cd %HOMEPATH%\Downloads
    git clone https://github.com/Jayfrej/1234.git
-   cd Tv2-MT5
+   cd 1234
    ```
 
 2. **Create a virtual environment**:
