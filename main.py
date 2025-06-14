@@ -1,88 +1,153 @@
-import os
-import time
-import threading
-import argparse
+#!/usr/bin/env python3
+"""
+TradingView to MetaTrader 5 Bridge
+Main entry point for the application
+"""
+
+import logging
 import sys
-from app.utils import setup_logging
-from app.mt5_handler import MT5Handler
-from app.server import run_server
+import os
+from threading import Thread
+import time
+import subprocess
+import requests
 
-# Set up logging
-logger = setup_logging('main')
+# Add the current directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-def start_server(mt5_handler=None):
-    """Start the Flask server directly in the main process"""
-    logger.info("Starting TradingView to MT5 integration application")
-    
-    # Create MT5 handler if not provided
-    if mt5_handler is None:
-        mt5_handler = MT5Handler()
-    
-    # Start the server
-    run_server(mt5_handler)
+from app.config import Config
+from app.server import app, initialize_mt5
 
-def start_ngrok():
-    """Start Ngrok in a separate process"""
-    logger.info("Starting Ngrok tunnel")
-    
-    # Import here to avoid importing if not used
-    from subprocess import Popen
-    
-    # Get the path to the ngrok setup script
-    ngrok_script = os.path.join(os.path.dirname(__file__), 'scripts', 'ngrok_setup.py')
-    
-    # Start Ngrok in a separate process
-    Popen([sys.executable, ngrok_script])
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('trading_bot.log'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
-def main():
-    """Main entry point for the application"""
-    # Parse command-line arguments
-    parser = argparse.ArgumentParser(description='TradingView to MT5 integration')
-    parser.add_argument('--no-ngrok', action='store_true', help='Do not start Ngrok automatically')
-    parser.add_argument('--test-mt5', action='store_true', help='Test MT5 connection and exit')
-    parser.add_argument('--ngrok-only', action='store_true', help='Start only Ngrok without Flask server')
-    args = parser.parse_args()
-    
-    # Test MT5 connection if requested
-    if args.test_mt5:
-        from scripts.test_mt5_connection import test_mt5_connection
-        test_mt5_connection()
-        return
-    
-    # Create MT5 handler
-    mt5_handler = MT5Handler()
-    
+logger = logging.getLogger(__name__)
+
+def setup_ngrok(auth_token, port):
+    """Setup and run Ngrok tunnel"""
     try:
-        # Option to start only Ngrok (useful for debugging)
-        if args.ngrok_only:
-            start_ngrok()
-            logger.info("Started Ngrok only. Press Ctrl+C to exit.")
-            while True:
-                time.sleep(1)
-            return
+        # Set auth token
+        subprocess.run(['ngrok', 'config', 'add-authtoken', auth_token], check=True)
         
-        # Start Ngrok in a separate process if not disabled
-        if not args.no_ngrok:
-            ngrok_process = threading.Thread(target=start_ngrok)
-            ngrok_process.daemon = True
-            ngrok_process.start()
-            time.sleep(2)  # Give Ngrok time to start
+        # Start tunnel
+        logger.info(f"Starting Ngrok tunnel on port {port}")
+        process = subprocess.Popen(['ngrok', 'http', str(port), '--log=stdout'], 
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        # Run the server in the main thread
-        logger.info("Starting Flask server...")
-        start_server(mt5_handler)
-            
-    except KeyboardInterrupt:
-        logger.info("Application terminated by user")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}", exc_info=True)
-    finally:
-        logger.info("Shutting down application")
+        # Wait for tunnel to be ready
+        time.sleep(5)
+        
+        # Get tunnel URL
         try:
-            if 'mt5_handler' in locals():
-                mt5_handler.close_session()
+            response = requests.get('http://localhost:4040/api/tunnels')
+            if response.status_code == 200:
+                tunnels = response.json().get('tunnels', [])
+                if tunnels:
+                    tunnel_url = tunnels[0]['public_url']
+                    webhook_url = f"{tunnel_url}/trade"
+                    
+                    # Save webhook URL to file
+                    with open('webhook_url.txt', 'w') as f:
+                        f.write(webhook_url)
+                    
+                    logger.info(f"Ngrok tunnel active!")
+                    logger.info(f"Webhook URL: {webhook_url}")
+                    logger.info(f"Webhook URL saved to: webhook_url.txt")
+                    
         except Exception as e:
-            logger.error(f"Error during shutdown: {str(e)}")
+            logger.warning(f"Could not get tunnel URL: {e}")
+            logger.info("Check Ngrok dashboard at: http://localhost:4040")
+            
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to setup Ngrok: {e}")
+    except FileNotFoundError:
+        logger.error("Ngrok not found. Please install Ngrok and add it to your PATH")
+    except Exception as e:
+        logger.error(f"Error setting up Ngrok: {e}")
+
+def run_server():
+    """Run the Flask server"""
+    try:
+        config = Config()
+        
+        # Validate configuration
+        errors = config.validate()
+        if errors:
+            logger.error("Configuration errors:")
+            for error in errors:
+                logger.error(f"  - {error}")
+            return False
+        
+        logger.info("Starting TradingView to MT5 Bridge...")
+        logger.info(config)
+        
+        # Initialize MT5 connection
+        logger.info("Initializing MT5 connection...")
+        if not initialize_mt5():
+            logger.error("Failed to initialize MT5 connection")
+            return False
+        
+        logger.info("MT5 connection successful!")
+        
+        # Start Flask server
+        logger.info(f"Starting Flask server on {config.SERVER_HOST}:{config.SERVER_PORT}")
+        app.run(
+            host=config.SERVER_HOST,
+            port=config.SERVER_PORT,
+            debug=config.DEBUG,
+            threaded=True
+        )
+        
+        return True
+        
+    except Exception as e:
+        logger.error(f"Error running server: {e}")
+        return False
+
+def run_with_ngrok():
+    """Run server with Ngrok tunnel"""
+    try:
+        config = Config()
+        
+        # Start Ngrok in a separate thread
+        logger.info("Setting up Ngrok tunnel...")
+        ngrok_thread = Thread(target=setup_ngrok, args=(config.NGROK_AUTH_TOKEN, config.SERVER_PORT))
+        ngrok_thread.daemon = True
+        ngrok_thread.start()
+        
+        # Wait a bit for Ngrok to start
+        time.sleep(3)
+        
+        # Start the main server
+        return run_server()
+        
+    except Exception as e:
+        logger.error(f"Error running with Ngrok: {e}")
+        return False
 
 if __name__ == "__main__":
-    main()
+    try:
+        # Check if user wants to run with Ngrok
+        if len(sys.argv) > 1 and sys.argv[1] == "--no-ngrok":
+            logger.info("Running without Ngrok tunnel")
+            success = run_server()
+        else:
+            logger.info("Running with Ngrok tunnel")
+            success = run_with_ngrok()
+        
+        if not success:
+            logger.error("Application failed to start")
+            sys.exit(1)
+            
+    except KeyboardInterrupt:
+        logger.info("Application stopped by user")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        sys.exit(1)

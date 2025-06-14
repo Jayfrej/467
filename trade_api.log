@@ -1,0 +1,227 @@
+2025-06-14 20:34:11,428 - app.server - INFO - === SERVER STARTING ===
+2025-06-14 20:34:11,430 - app.server - INFO - Starting server on 0.0.0.0:5000
+2025-06-14 20:34:11,447 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.166:5000
+2025-06-14 20:34:11,448 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-14 20:34:11,449 - werkzeug - INFO -  * Restarting with stat
+2025-06-14 20:34:13,905 - app.server - INFO - === SERVER STARTING ===
+2025-06-14 20:34:13,908 - app.server - INFO - Starting server on 0.0.0.0:5000
+2025-06-14 20:34:13,915 - werkzeug - WARNING -  * Debugger is active!
+2025-06-14 20:34:13,917 - werkzeug - INFO -  * Debugger PIN: 364-012-285
+2025-06-14 20:35:00,683 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:35:00,683 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:35:00,683 - app.server - INFO - Method: POST
+2025-06-14 20:35:00,683 - app.server - INFO - Path: /trade
+2025-06-14 20:35:00,684 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:35:00,684 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.51"\n}'
+2025-06-14 20:35:00,684 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:35:00,684 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:35:00,684 - app.server - INFO - Method: POST
+2025-06-14 20:35:00,684 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:35:00,684 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:35:00,684 - app.server - INFO - Content-Length: 57
+2025-06-14 20:35:00,684 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:35:00,684 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.51"\n}'
+2025-06-14 20:35:00,684 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:35:00,684 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.51'}
+2025-06-14 20:35:00,684 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.51'}
+2025-06-14 20:35:00,685 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:35:00,685 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:35:00,685 - app.server - INFO - Volume from webhook: 0.51 (type: <class 'str'>)
+2025-06-14 20:35:00,685 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: BUY, Volume: 0.51, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:35:00,685 - app.mt5_handler - INFO - Closing existing positions for BTCUSD before placing new order
+2025-06-14 20:35:00,686 - app.mt5_handler - INFO - Position 1000425589 - Total volume: 0.5, Closing volume: 0.5
+2025-06-14 20:35:00,686 - app.mt5_handler - INFO - Closing position 1000425589: {'action': 1, 'position': 1000425589, 'symbol': 'BTCUSD', 'volume': 0.5, 'type': 1, 'price': 104980.66, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:35:00,887 - app.mt5_handler - INFO - Position 1000425589 closed successfully. Volume closed: 0.5, Details: {'retcode': 10009, 'deal': 943637156, 'order': 1000652586, 'volume': 0.5, 'price': 104981.56, 'bid': 104981.56, 'ask': 104996.83, 'comment': 'Close position', 'request_id': 2383708501, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.5, price=104980.66, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000425589, position_by=0)}
+2025-06-14 20:35:00,887 - app.mt5_handler - INFO - Closed 1 positions, 0 failed for symbol: BTCUSD, Total volume closed: 0.5
+2025-06-14 20:35:00,887 - app.mt5_handler - INFO - Close result: Closed 1 positions, 0 failed
+2025-06-14 20:35:01,388 - app.mt5_handler - INFO - Trading symbol: BTCUSD
+2025-06-14 20:35:01,388 - app.mt5_handler - INFO - Current BTCUSD prices - Bid: 104973.9, Ask: 104989.17
+2025-06-14 20:35:01,388 - app.mt5_handler - INFO - Sending order: {'action': 1, 'symbol': 'BTCUSD', 'volume': 0.51, 'type': 0, 'price': 104989.17, 'deviation': 30, 'magic': 234000, 'comment': 'TradingView Signal', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:35:01,613 - app.mt5_handler - INFO - Order executed successfully. Details: {'retcode': 10009, 'deal': 943637173, 'order': 1000652611, 'volume': 0.51, 'price': 104987.99, 'bid': 104972.73, 'ask': 104987.99, 'comment': 'TradingView Sign', 'request_id': 2383708502, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.51, price=104989.17, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=0, type_filling=1, type_time=0, expiration=0, comment='TradingView Signal', position=0, position_by=0)}
+2025-06-14 20:35:01,615 - app.server - INFO - Trade executed successfully: Order executed: BUY BTCUSD
+2025-06-14 20:35:01,616 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:35:01,616 - app.server - INFO - Response Status: 200
+2025-06-14 20:35:01,616 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '559'}
+2025-06-14 20:35:01,616 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:35:01,616 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:35:01] "POST /trade HTTP/1.1" 200 -
+2025-06-14 20:42:01,662 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:42:01,662 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:42:01,662 - app.server - INFO - Method: POST
+2025-06-14 20:42:01,663 - app.server - INFO - Path: /trade
+2025-06-14 20:42:01,663 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:42:01,663 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.21"\n}'
+2025-06-14 20:42:01,663 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:42:01,663 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:42:01,663 - app.server - INFO - Method: POST
+2025-06-14 20:42:01,663 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:42:01,663 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:42:01,663 - app.server - INFO - Content-Length: 59
+2025-06-14 20:42:01,663 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:42:01,664 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.21"\n}'
+2025-06-14 20:42:01,664 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:42:01,664 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.21'}
+2025-06-14 20:42:01,664 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.21'}
+2025-06-14 20:42:01,664 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:42:01,664 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:42:01,664 - app.server - INFO - Volume specified for CLOSE action: 0.21 (type: <class 'str'>)
+2025-06-14 20:42:01,664 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: CLOSE, Volume: 0.21, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:42:01,664 - app.server - INFO - Processing CLOSE action for symbol: BTCUSD
+2025-06-14 20:42:01,666 - app.mt5_handler - INFO - Closing 0.21 total volume across 2 positions (0.105 each)
+2025-06-14 20:42:01,666 - app.mt5_handler - INFO - Position 1000652611 - Total volume: 0.51, Closing volume: 0.105
+2025-06-14 20:42:01,666 - app.mt5_handler - INFO - Closing position 1000652611: {'action': 1, 'position': 1000652611, 'symbol': 'BTCUSD', 'volume': 0.105, 'type': 1, 'price': 105023.39, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:42:01,667 - app.mt5_handler - ERROR - Close position failed. Details: {'retcode': 10014, 'deal': 0, 'order': 0, 'volume': 0.0, 'price': 0.0, 'bid': 0.0, 'ask': 0.0, 'comment': 'Invalid volume', 'request_id': 0, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.105, price=105023.39, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000652611, position_by=0)}
+2025-06-14 20:42:01,667 - app.mt5_handler - INFO - Position 1000656834 - Total volume: 0.09, Closing volume: 0.09
+2025-06-14 20:42:01,667 - app.mt5_handler - INFO - Closing position 1000656834: {'action': 1, 'position': 1000656834, 'symbol': 'BTCUSD', 'volume': 0.09, 'type': 1, 'price': 105023.39, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:42:01,887 - app.mt5_handler - INFO - Position 1000656834 closed successfully. Volume closed: 0.09, Details: {'retcode': 10009, 'deal': 943650644, 'order': 1000666021, 'volume': 0.09, 'price': 105022.78, 'bid': 105022.78, 'ask': 105038.05, 'comment': 'Close position', 'request_id': 2383708504, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.09, price=105023.39, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000656834, position_by=0)}
+2025-06-14 20:42:01,887 - app.mt5_handler - INFO - Closed 1 positions, 1 failed for symbol: BTCUSD, Total volume closed: 0.09
+2025-06-14 20:42:01,887 - app.server - ERROR - Trade execution failed: Closed 1 positions, 1 failed
+2025-06-14 20:42:01,887 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:42:01,888 - app.server - INFO - Response Status: 500
+2025-06-14 20:42:01,888 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '1581'}
+2025-06-14 20:42:01,888 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:42:01,888 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:42:01] "[35m[1mPOST /trade HTTP/1.1[0m" 500 -
+2025-06-14 20:42:07,317 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:42:07,317 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:42:07,317 - app.server - INFO - Method: POST
+2025-06-14 20:42:07,317 - app.server - INFO - Path: /trade
+2025-06-14 20:42:07,317 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:42:07,317 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.21"\n}'
+2025-06-14 20:42:07,317 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:42:07,317 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:42:07,317 - app.server - INFO - Method: POST
+2025-06-14 20:42:07,318 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:42:07,318 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:42:07,318 - app.server - INFO - Content-Length: 59
+2025-06-14 20:42:07,318 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:42:07,318 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.21"\n}'
+2025-06-14 20:42:07,318 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:42:07,318 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.21'}
+2025-06-14 20:42:07,318 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.21'}
+2025-06-14 20:42:07,318 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:42:07,318 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:42:07,318 - app.server - INFO - Volume specified for CLOSE action: 0.21 (type: <class 'str'>)
+2025-06-14 20:42:07,318 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: CLOSE, Volume: 0.21, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:42:07,318 - app.server - INFO - Processing CLOSE action for symbol: BTCUSD
+2025-06-14 20:42:07,320 - app.mt5_handler - INFO - Position 1000652611 - Total volume: 0.51, Closing volume: 0.21
+2025-06-14 20:42:07,320 - app.mt5_handler - INFO - Closing position 1000652611: {'action': 1, 'position': 1000652611, 'symbol': 'BTCUSD', 'volume': 0.21, 'type': 1, 'price': 105020.4, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:42:07,519 - app.mt5_handler - INFO - Position 1000652611 closed successfully. Volume closed: 0.21, Details: {'retcode': 10009, 'deal': 943650782, 'order': 1000666154, 'volume': 0.21, 'price': 105017.71, 'bid': 105017.71, 'ask': 105032.98, 'comment': 'Close position', 'request_id': 2383708505, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.21, price=105020.4, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000652611, position_by=0)}
+2025-06-14 20:42:07,520 - app.mt5_handler - INFO - Closed 1 positions, 0 failed for symbol: BTCUSD, Total volume closed: 0.21
+2025-06-14 20:42:07,520 - app.server - INFO - Trade executed successfully: Closed 1 positions, 0 failed
+2025-06-14 20:42:07,520 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:42:07,521 - app.server - INFO - Response Status: 200
+2025-06-14 20:42:07,521 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '905'}
+2025-06-14 20:42:07,521 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:42:07,522 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:42:07] "POST /trade HTTP/1.1" 200 -
+2025-06-14 20:43:00,620 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:43:00,620 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:43:00,620 - app.server - INFO - Method: POST
+2025-06-14 20:43:00,620 - app.server - INFO - Path: /trade
+2025-06-14 20:43:00,621 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:43:00,621 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.21"\n}'
+2025-06-14 20:43:00,621 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:43:00,621 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:43:00,621 - app.server - INFO - Method: POST
+2025-06-14 20:43:00,622 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:43:00,622 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:43:00,622 - app.server - INFO - Content-Length: 57
+2025-06-14 20:43:00,622 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:43:00,622 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.21"\n}'
+2025-06-14 20:43:00,623 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:43:00,623 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.21'}
+2025-06-14 20:43:00,623 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.21'}
+2025-06-14 20:43:00,623 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:43:00,624 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:43:00,624 - app.server - INFO - Volume from webhook: 0.21 (type: <class 'str'>)
+2025-06-14 20:43:00,624 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: BUY, Volume: 0.21, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:43:00,624 - app.mt5_handler - INFO - Closing existing positions for BTCUSD before placing new order
+2025-06-14 20:43:00,626 - app.mt5_handler - INFO - Position 1000652611 - Total volume: 0.3, Closing volume: 0.3
+2025-06-14 20:43:00,626 - app.mt5_handler - INFO - Closing position 1000652611: {'action': 1, 'position': 1000652611, 'symbol': 'BTCUSD', 'volume': 0.3, 'type': 1, 'price': 105047.88, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:43:00,858 - app.mt5_handler - INFO - Position 1000652611 closed successfully. Volume closed: 0.3, Details: {'retcode': 10009, 'deal': 943652014, 'order': 1000667355, 'volume': 0.3, 'price': 105048.01000000001, 'bid': 105048.01000000001, 'ask': 105063.28, 'comment': 'Close position', 'request_id': 2383708506, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.3, price=105047.88, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000652611, position_by=0)}
+2025-06-14 20:43:00,858 - app.mt5_handler - INFO - Closed 1 positions, 0 failed for symbol: BTCUSD, Total volume closed: 0.3
+2025-06-14 20:43:00,858 - app.mt5_handler - INFO - Close result: Closed 1 positions, 0 failed
+2025-06-14 20:43:01,360 - app.mt5_handler - INFO - Trading symbol: BTCUSD
+2025-06-14 20:43:01,360 - app.mt5_handler - INFO - Current BTCUSD prices - Bid: 105049.22, Ask: 105064.48
+2025-06-14 20:43:01,360 - app.mt5_handler - INFO - Sending order: {'action': 1, 'symbol': 'BTCUSD', 'volume': 0.21, 'type': 0, 'price': 105064.48, 'deviation': 30, 'magic': 234000, 'comment': 'TradingView Signal', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:43:01,580 - app.mt5_handler - INFO - Order executed successfully. Details: {'retcode': 10009, 'deal': 943652019, 'order': 1000667361, 'volume': 0.21, 'price': 105064.69, 'bid': 105049.42, 'ask': 105064.69, 'comment': 'TradingView Sign', 'request_id': 2383708507, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.21, price=105064.48, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=0, type_filling=1, type_time=0, expiration=0, comment='TradingView Signal', position=0, position_by=0)}
+2025-06-14 20:43:01,580 - app.server - INFO - Trade executed successfully: Order executed: BUY BTCUSD
+2025-06-14 20:43:01,581 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:43:01,581 - app.server - INFO - Response Status: 200
+2025-06-14 20:43:01,581 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '559'}
+2025-06-14 20:43:01,581 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:43:01,581 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:43:01] "POST /trade HTTP/1.1" 200 -
+2025-06-14 20:44:00,220 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:44:00,220 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:44:00,220 - app.server - INFO - Method: POST
+2025-06-14 20:44:00,220 - app.server - INFO - Path: /trade
+2025-06-14 20:44:00,220 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:44:00,220 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.20"\n}'
+2025-06-14 20:44:00,220 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:44:00,220 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:44:00,221 - app.server - INFO - Method: POST
+2025-06-14 20:44:00,221 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:44:00,221 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:44:00,221 - app.server - INFO - Content-Length: 59
+2025-06-14 20:44:00,221 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '59', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '52.32.178.7', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:44:00,221 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "close",\n"volume": "0.20"\n}'
+2025-06-14 20:44:00,221 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:44:00,221 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.20'}
+2025-06-14 20:44:00,221 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'close', 'volume': '0.20'}
+2025-06-14 20:44:00,221 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:44:00,221 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:44:00,221 - app.server - INFO - Volume specified for CLOSE action: 0.20 (type: <class 'str'>)
+2025-06-14 20:44:00,222 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: CLOSE, Volume: 0.2, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:44:00,222 - app.server - INFO - Processing CLOSE action for symbol: BTCUSD
+2025-06-14 20:44:00,223 - app.mt5_handler - INFO - Position 1000667361 - Total volume: 0.21, Closing volume: 0.2
+2025-06-14 20:44:00,223 - app.mt5_handler - INFO - Closing position 1000667361: {'action': 1, 'position': 1000667361, 'symbol': 'BTCUSD', 'volume': 0.2, 'type': 1, 'price': 104984.78, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:44:00,457 - app.mt5_handler - INFO - Position 1000667361 closed successfully. Volume closed: 0.2, Details: {'retcode': 10009, 'deal': 943653705, 'order': 1000669037, 'volume': 0.2, 'price': 104985.94, 'bid': 104985.94, 'ask': 105001.2, 'comment': 'Close position', 'request_id': 2383708508, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.2, price=104984.78, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000667361, position_by=0)}
+2025-06-14 20:44:00,458 - app.mt5_handler - INFO - Closed 1 positions, 0 failed for symbol: BTCUSD, Total volume closed: 0.2
+2025-06-14 20:44:00,458 - app.server - INFO - Trade executed successfully: Closed 1 positions, 0 failed
+2025-06-14 20:44:00,458 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:44:00,458 - app.server - INFO - Response Status: 200
+2025-06-14 20:44:00,458 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '900'}
+2025-06-14 20:44:00,459 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:44:00,459 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:44:00] "POST /trade HTTP/1.1" 200 -
+2025-06-14 20:50:01,118 - app.server - INFO - === REQUEST START ===
+2025-06-14 20:50:01,118 - app.server - INFO - Endpoint: webhook
+2025-06-14 20:50:01,118 - app.server - INFO - Method: POST
+2025-06-14 20:50:01,118 - app.server - INFO - Path: /trade
+2025-06-14 20:50:01,118 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:50:01,119 - app.server - INFO - Body: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.20"\n}'
+2025-06-14 20:50:01,119 - app.server - INFO - === TRADE REQUEST START ===
+2025-06-14 20:50:01,119 - app.server - INFO - Remote address: 127.0.0.1
+2025-06-14 20:50:01,119 - app.server - INFO - Method: POST
+2025-06-14 20:50:01,119 - app.server - INFO - URL: http://38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app/trade
+2025-06-14 20:50:01,119 - app.server - INFO - Content-Type: application/json; charset=utf-8
+2025-06-14 20:50:01,119 - app.server - INFO - Content-Length: 57
+2025-06-14 20:50:01,119 - app.server - INFO - Headers: {'Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'User-Agent': 'Go-http-client/1.1', 'Content-Length': '57', 'Accept-Encoding': 'gzip', 'Content-Type': 'application/json; charset=utf-8', 'X-Forwarded-For': '34.212.75.30', 'X-Forwarded-Host': '38bc-2001-fb1-cf-fd11-f34a-31c0-6b48-7d0a.ngrok-free.app', 'X-Forwarded-Proto': 'https'}
+2025-06-14 20:50:01,119 - app.server - INFO - Raw data: b'{\n"symbol": "BTCUSD",\n"action": "buy",\n"volume": "0.20"\n}'
+2025-06-14 20:50:01,119 - app.server - INFO - Checking if request is JSON: True
+2025-06-14 20:50:01,119 - app.server - INFO - Got JSON data via request.get_json(): {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.20'}
+2025-06-14 20:50:01,120 - app.server - INFO - SUCCESS: Parsed webhook data: {'symbol': 'BTCUSD', 'action': 'buy', 'volume': '0.20'}
+2025-06-14 20:50:01,120 - app.server - INFO - Data type: <class 'dict'>
+2025-06-14 20:50:01,120 - app.server - INFO - Data keys: ['symbol', 'action', 'volume']
+2025-06-14 20:50:01,120 - app.server - INFO - Volume from webhook: 0.20 (type: <class 'str'>)
+2025-06-14 20:50:01,120 - app.server - INFO - Processed trade params - Symbol: BTCUSD, Action: BUY, Volume: 0.2, Close existing: True, Comment: TradingView Signal
+2025-06-14 20:50:01,120 - app.mt5_handler - INFO - Closing existing positions for BTCUSD before placing new order
+2025-06-14 20:50:01,121 - app.mt5_handler - INFO - Position 1000667361 - Total volume: 0.01, Closing volume: 0.01
+2025-06-14 20:50:01,122 - app.mt5_handler - INFO - Closing position 1000667361: {'action': 1, 'position': 1000667361, 'symbol': 'BTCUSD', 'volume': 0.01, 'type': 1, 'price': 104970.64, 'deviation': 30, 'magic': 234000, 'comment': 'Close position', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:50:01,341 - app.mt5_handler - INFO - Position 1000667361 closed successfully. Volume closed: 0.01, Details: {'retcode': 10009, 'deal': 943663673, 'order': 1000678822, 'volume': 0.01, 'price': 104965.35, 'bid': 104965.35, 'ask': 104980.61, 'comment': 'Close position', 'request_id': 2383708509, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.01, price=104970.64, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=1, type_filling=1, type_time=0, expiration=0, comment='Close position', position=1000667361, position_by=0)}
+2025-06-14 20:50:01,343 - app.mt5_handler - INFO - Closed 1 positions, 0 failed for symbol: BTCUSD, Total volume closed: 0.01
+2025-06-14 20:50:01,343 - app.mt5_handler - INFO - Close result: Closed 1 positions, 0 failed
+2025-06-14 20:50:01,844 - app.mt5_handler - INFO - Trading symbol: BTCUSD
+2025-06-14 20:50:01,844 - app.mt5_handler - INFO - Current BTCUSD prices - Bid: 104964.38, Ask: 104979.65
+2025-06-14 20:50:01,844 - app.mt5_handler - INFO - Sending order: {'action': 1, 'symbol': 'BTCUSD', 'volume': 0.2, 'type': 0, 'price': 104979.65, 'deviation': 30, 'magic': 234000, 'comment': 'TradingView Signal', 'type_time': 0, 'type_filling': 1}
+2025-06-14 20:50:02,052 - app.mt5_handler - INFO - Order executed successfully. Details: {'retcode': 10009, 'deal': 943663681, 'order': 1000678832, 'volume': 0.2, 'price': 104979.68000000001, 'bid': 104964.42, 'ask': 104979.68000000001, 'comment': 'TradingView Sign', 'request_id': 2383708510, 'retcode_external': 0, 'request': TradeRequest(action=1, magic=234000, order=0, symbol='BTCUSD', volume=0.2, price=104979.65, stoplimit=0.0, sl=0.0, tp=0.0, deviation=30, type=0, type_filling=1, type_time=0, expiration=0, comment='TradingView Signal', position=0, position_by=0)}
+2025-06-14 20:50:02,052 - app.server - INFO - Trade executed successfully: Order executed: BUY BTCUSD
+2025-06-14 20:50:02,052 - app.server - INFO - === TRADE REQUEST END ===
+2025-06-14 20:50:02,052 - app.server - INFO - Response Status: 200
+2025-06-14 20:50:02,052 - app.server - INFO - Response Headers: {'Content-Type': 'application/json', 'Content-Length': '575'}
+2025-06-14 20:50:02,052 - app.server - INFO - === REQUEST END ===
+2025-06-14 20:50:02,053 - werkzeug - INFO - 127.0.0.1 - - [14/Jun/2025 20:50:02] "POST /trade HTTP/1.1" 200 -
+2025-06-14 20:50:57,826 - main - INFO - Shutting down application
+2025-06-14 20:50:57,827 - app.mt5_handler - INFO - MT5 connection closed
+2025-06-14 20:50:57,892 - main - INFO - Shutting down application
+2025-06-14 20:50:57,892 - app.mt5_handler - INFO - MT5 connection closed

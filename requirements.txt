@@ -1,13 +1,4 @@
-# Core dependencies
 Flask==2.3.3
 MetaTrader5==5.0.45
-pyngrok==7.0.0
 python-dotenv==1.0.0
-
-# Data handling
-pandas==2.1.0
-numpy==1.25.2
-
-# Utilities
 requests==2.31.0
-pytz==2023.3
