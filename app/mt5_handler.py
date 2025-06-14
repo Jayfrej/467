@@ -135,12 +135,13 @@ class MT5Handler:
         symbol_names = [s.name for s in all_symbols]
         return symbol_names
     
-    def close_all_positions(self, symbol=None):
+    def close_all_positions(self, symbol=None, close_volume=None):
         """
         Close all open positions for a specific symbol or all symbols
         
         Args:
             symbol (str, optional): Symbol to close positions for. If None, closes all positions.
+            close_volume (float, optional): Volume to close per position. If None, closes full positions.
             
         Returns:
             dict: Result summary of close operations
@@ -155,22 +156,34 @@ class MT5Handler:
         closed_count = 0
         failed_count = 0
         results = []
+        total_volume_closed = 0.0
+        
+        # หาก close_volume ระบุมา และมี position หลายตัว ให้แบ่ง volume
+        if close_volume is not None and len(positions) > 1:
+            # แบ่ง volume ให้แต่ละ position เท่าๆ กัน
+            volume_per_position = close_volume / len(positions)
+            logger.info(f"Closing {close_volume} total volume across {len(positions)} positions ({volume_per_position} each)")
+        else:
+            volume_per_position = close_volume
         
         for position in positions:
-            result = self.close_position(position['ticket'])
+            result = self.close_position(position['ticket'], volume_per_position)
             results.append(result)
+            
             if result['success']:
                 closed_count += 1
+                total_volume_closed += result.get('volume_closed', 0)
             else:
                 failed_count += 1
         
-        logger.info(f"Closed {closed_count} positions, {failed_count} failed for symbol: {symbol}")
+        logger.info(f"Closed {closed_count} positions, {failed_count} failed for symbol: {symbol}, Total volume closed: {total_volume_closed}")
         
         return {
             "success": failed_count == 0,
             "message": f"Closed {closed_count} positions, {failed_count} failed",
             "closed_count": closed_count,
             "failed_count": failed_count,
+            "total_volume_closed": total_volume_closed,
             "details": results
         }
 
@@ -337,12 +350,13 @@ class MT5Handler:
             
         return result
     
-    def close_position(self, position_id):
+    def close_position(self, position_id, close_volume=None):
         """
-        Close a specific position by its ticket
+        Close a specific position by its ticket (full or partial close)
         
         Args:
             position_id (int): Position ticket
+            close_volume (float, optional): Volume to close. If None, closes full position
             
         Returns:
             dict: Result of the close operation
@@ -358,6 +372,16 @@ class MT5Handler:
         position = positions[0]
         position_symbol = position.symbol
         
+        # Determine volume to close
+        if close_volume is None:
+            # Close full position
+            volume_to_close = position.volume
+        else:
+            # Close partial - ensure we don't close more than available
+            volume_to_close = min(float(close_volume), position.volume)
+            
+        logger.info(f"Position {position_id} - Total volume: {position.volume}, Closing volume: {volume_to_close}")
+        
         # Determine order type for closing
         close_type = mt5.ORDER_TYPE_SELL if position.type == mt5.ORDER_TYPE_BUY else mt5.ORDER_TYPE_BUY
         price = mt5.symbol_info_tick(position_symbol).bid if position.type == mt5.ORDER_TYPE_BUY else mt5.symbol_info_tick(position_symbol).ask
@@ -367,7 +391,7 @@ class MT5Handler:
             "action": mt5.TRADE_ACTION_DEAL,
             "position": position_id,
             "symbol": position_symbol,
-            "volume": position.volume,
+            "volume": volume_to_close,  # ใช้ volume ที่คำนวณแล้ว
             "type": close_type,
             "price": price,
             "deviation": 30,
@@ -400,11 +424,12 @@ class MT5Handler:
             }
         
         result_dict = result._asdict()
-        logger.info(f"Position {position_id} closed successfully. Details: {result_dict}")
+        logger.info(f"Position {position_id} closed successfully. Volume closed: {volume_to_close}, Details: {result_dict}")
         return {
             "success": True,
-            "message": f"Position {position_id} closed",
-            "details": result_dict
+            "message": f"Position {position_id} closed (Volume: {volume_to_close})",
+            "details": result_dict,
+            "volume_closed": volume_to_close
         }
     
     def close_session(self):
