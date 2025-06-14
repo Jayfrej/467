@@ -101,13 +101,16 @@ tradingview-alerts-to-metatrader5/
    MT5_SERVER=your-broker-server
    MT5_PATH=C:\Program Files\MetaTrader 5\terminal64.exe
 
+
    # MT5 Symbol Settings
-   MT5_DEFAULT_SUFFIX=.r
+   #MT5_DEFAULT_SUFFIX= Not put anything in here / Make it from TradingView alert
+   MT5_DEFAULT_SUFFIX=
 
    # Trading Parameters
-   DEFAULT_VOLUME=0.01
-   DEFAULT_STOP_LOSS=100
-   DEFAULT_TAKE_PROFIT=200
+   # DEFAULT_VOLUME=0.01
+   # DEFAULT_STOP_LOSS=100
+   # DEFAULT_TAKE_PROFIT=200
+   
    ```
 
 6. **Ngrok**:  Sign up and looking for Your Authtoken and put in .env![Screenshot 2025-06-14 225752](https://github.com/user-attachments/assets/8be791ec-b256-417b-b53d-e7c3d99d6491)
