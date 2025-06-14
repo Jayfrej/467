@@ -82,7 +82,7 @@ tradingview-alerts-to-metatrader5/
       ```
    3.1 **if it error**:
    ```bash
-   cd C:\Users\User\Downloads\1234
+   cd C:\Users\User\Downloads\467
    pip install -r requirements.txt
 
       ```
