@@ -59,7 +59,8 @@ tradingview-alerts-to-metatrader5/
 
 ## Installation
 
-1. **Clone the repository**: open CMD
+1. **Clone the repository**: open CMD![Screenshot 2025-06-14 225440](https://github.com/user-attachments/assets/b295a41c-2b12-457d-8b74-7b89b08e3c08)
+
    ```bash
    cd %HOMEPATH%\Downloads
    git clone https://github.com/Jayfrej/1234.git
@@ -109,11 +110,14 @@ tradingview-alerts-to-metatrader5/
    DEFAULT_TAKE_PROFIT=200
    ```
 
-6. **Ngrok**:  Sign up and looking for Your Authtoken and put in .env
+6. **Ngrok**:  Sign up and looking for Your Authtoken and put in .env![Screenshot 2025-06-14 225752](https://github.com/user-attachments/assets/8be791ec-b256-417b-b53d-e7c3d99d6491)
 
-7. **MT5_PATH**:right click on your program and copy (.exe )
+
+7. **MT5_PATH**:right click on your program and copy (.exe )![Screenshot 2025-06-14 230043](https://github.com/user-attachments/assets/5b21d87c-d40d-40dc-b8b8-935c6d35246f)
+
    
-8. **Go MT5 press F4 put this code/save as EA**
+8. **Go MT5 press F4 put this code/save as EA**![Screenshot 2025-06-14 230259](https://github.com/user-attachments/assets/7d8d1a7f-3359-40be-8e04-dfb2d9912d4a)
+
 
 ```bash
 //+------------------------------------------------------------------+
@@ -354,6 +358,12 @@ string GetErrorDescription(int error_code)
 ```
 
 9. **run**: copy webhook to TV and MT5
+ ![image](https://github.com/user-attachments/assets/e48bd5fc-08f9-4bfb-8556-095d4df9c84c)
+![image](https://github.com/user-attachments/assets/fba7f04a-11c2-4a70-a856-353998849324)
+![Screenshot 2025-06-14 230457](https://github.com/user-attachments/assets/7eed188a-7cd3-4b8b-88b0-960be4948200)
+
+
+
    ```bash
    python main.py
       ```
@@ -380,6 +390,32 @@ string GetErrorDescription(int error_code)
    "volume": "{{strategy.order.contracts}}"
    }
    ```
+    Buy 0.1 lot
+   
+   ```json
+   {
+   "symbol": "{{ticker}}",
+   "action": "buy",
+   "volume": "0.1"
+   }
+   ```
+    Sell 0.2 lot
+   
+    ```json
+    {
+      "symbol": "{{ticker}}",
+      "action": "sell",
+      "volume": "0.2"
+    }
+    ```
+      Close 0.05 lot
+    ```json
+    {
+      "symbol": "{{ticker}}",
+      "action": "close",
+      "volume": "0.05"
+    }
+    ```
 
    1. **Use a VPS**:
 
