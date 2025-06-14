@@ -63,8 +63,8 @@ tradingview-alerts-to-metatrader5/
 
    ```bash
    cd %HOMEPATH%\Downloads
-   git clone https://github.com/Jayfrej/1234.git
-   cd 1234
+   git clone https://github.com/Jayfrej/467.git
+   cd 467
    ```
 
 2. **Create a virtual environment**:if (The system cannot find the path specified) put it again
