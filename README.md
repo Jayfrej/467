@@ -365,6 +365,18 @@ string GetErrorDescription(int error_code)
    ```bash
    python main.py
       ```
+## For open next time
+
+1
+ ```bash
+   cd C:\Users\User\Downloads\4607
+ ```
+2
+   ```bash
+   python main.py
+ ```
+
+
 
 
 ## Setting Up TradingView Alerts
