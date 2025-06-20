@@ -29,25 +29,45 @@ class Config:
         self.SERVER_HOST = os.getenv('FLASK_HOST', os.getenv('SERVER_HOST', '0.0.0.0'))
         self.SERVER_PORT = int(os.getenv('FLASK_PORT', os.getenv('SERVER_PORT', 5000)))
         self.DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+
+        # --- SECTION ADDED FOR EMAIL ALERTS ---
+        # Email Alert Configuration
+        self.SENDER_EMAIL = os.getenv('SENDER_EMAIL', '')
+        self.SENDER_PASSWORD = os.getenv('SENDER_PASSWORD', '')
+        self.RECEIVER_EMAIL = os.getenv('RECEIVER_EMAIL', '')
+        self.SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
+        self.SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
+        # --- END OF ADDED SECTION ---
         
     def validate(self):
         """Validate configuration"""
         errors = []
         
         if not self.MT5_ACCOUNT:
-            errors.append("MT5_ACCOUNT is required")
+            errors.append("MT5_ACCOUNT is required in .env file")
             
         if not self.MT5_PASSWORD:
-            errors.append("MT5_PASSWORD is required")
+            errors.append("MT5_PASSWORD is required in .env file")
             
         if not self.MT5_SERVER:
-            errors.append("MT5_SERVER is required")
+            errors.append("MT5_SERVER is required in .env file")
             
         if not os.path.exists(self.MT5_PATH):
             errors.append(f"MT5_PATH does not exist: {self.MT5_PATH}")
             
         if not self.NGROK_AUTH_TOKEN:
-            errors.append("NGROK_AUTH_TOKEN is required")
+            errors.append("NGROK_AUTH_TOKEN is required in .env file")
+
+        # --- SECTION ADDED FOR EMAIL VALIDATION ---
+        if not self.SENDER_EMAIL:
+            errors.append("SENDER_EMAIL is required in .env file for alerts")
+        
+        if not self.SENDER_PASSWORD:
+            errors.append("SENDER_PASSWORD is required in .env file for alerts")
+
+        if not self.RECEIVER_EMAIL:
+            errors.append("RECEIVER_EMAIL is required in .env file for alerts")
+        # --- END OF ADDED SECTION ---
             
         return errors
     
@@ -69,4 +89,17 @@ Server Configuration:
 - Host: {self.SERVER_HOST}
 - Port: {self.SERVER_PORT}
 - Debug: {self.DEBUG}
+
+{self.get_email_config_str()}
 """
+
+    # --- METHOD ADDED FOR EMAIL CONFIG STRING ---
+    def get_email_config_str(self):
+        """Returns string representation of email config"""
+        if self.SENDER_EMAIL:
+            return f"""Email Alert Configuration:
+- Sender: {self.SENDER_EMAIL}
+- Receiver: {self.RECEIVER_EMAIL}
+- SMTP Server: {self.SMTP_SERVER}:{self.SMTP_PORT}"""
+        return "Email Alert Configuration: Not Configured"
+    # --- END OF ADDED METHOD ---
