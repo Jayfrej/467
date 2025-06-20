@@ -101,12 +101,20 @@ tradingview-alerts-to-metatrader5/
    #MT5_DEFAULT_SUFFIX= Not put anything in here / Make it from TradingView alert
    MT5_DEFAULT_SUFFIX=
 
-   # Trading Parameters
-   # DEFAULT_VOLUME=0.01
-   # DEFAULT_STOP_LOSS=100
-   # DEFAULT_TAKE_PROFIT=200
+   # Ngrok Configuration
+   NGROK_AUTH_TOKEN=your-ngrok-auth-token
+
+   # --- EMAIL ALERTS CONFIGURATION ---
+   SENDER_EMAIL="your_email@gmail.com"
+   SENDER_PASSWORD="YOUR_GMAIL_APP_PASSWORD"
+   RECEIVER_EMAIL="your_alert_email@example.com"
+   SMTP_SERVER="smtp.gmail.com"
+   SMTP_PORT="587"
    
    ```
+5.1 If you can't find a app password in your email use these links https://myaccount.google.com/apppasswords
+   ![Screenshot 2025-06-20 215614](https://github.com/user-attachments/assets/72be9280-ec24-488d-8d9f-16fcd08dccef)
+
 
 6. **Ngrok**:  Sign up and looking for Your Authtoken and put in .env![Screenshot 2025-06-14 225752](https://github.com/user-attachments/assets/8be791ec-b256-417b-b53d-e7c3d99d6491)
 
