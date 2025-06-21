@@ -69,7 +69,6 @@ class MT5Handler:
         for position in positions:
             if position.type == position_type:
                 try:
-                    # Create close request
                     request = {
                         "action": mt5.TRADE_ACTION_DEAL,
                         "symbol": symbol,
@@ -81,7 +80,7 @@ class MT5Handler:
                         "magic": 0,
                         "comment": "Close position",
                         "type_time": mt5.ORDER_TIME_GTC,
-                        "type_filling": mt5.ORDER_FILLING_IOC,
+                        "type_filling": mt5.ORDER_FILLING_FOK,
                     }
                     
                     result = mt5.order_send(request)
@@ -125,7 +124,7 @@ class MT5Handler:
                     "magic": 0,
                     "comment": f"Close {close_volume} lots",
                     "type_time": mt5.ORDER_TIME_GTC,
-                    "type_filling": mt5.ORDER_FILLING_IOC,
+                    "type_filling": mt5.ORDER_FILLING_FOK,
                 }
                 
                 result = mt5.order_send(request)
@@ -149,13 +148,11 @@ class MT5Handler:
             
         symbol = self.get_symbol_with_suffix(symbol)
         
-        # Get symbol info
         symbol_info = mt5.symbol_info(symbol)
         if symbol_info is None:
             logger.error(f"Symbol {symbol} not found")
             return None
         
-        # Get current tick
         tick = mt5.symbol_info_tick(symbol)
         if tick is None:
             logger.error(f"Failed to get tick for {symbol}")
@@ -163,29 +160,24 @@ class MT5Handler:
         
         try:
             if action.lower() == "buy":
-                # ถ้าเป็นคำสั่งซื้อ และมีโพซิชั่นขายอยู่ ให้ปิดโพซิชั่นขายทั้งหมดก่อน
                 sell_positions = [p for p in self.get_positions(symbol) if p.type == mt5.ORDER_TYPE_SELL]
                 if sell_positions:
                     logger.info(f"Closing all sell positions for {symbol} before opening buy")
                     self.close_all_positions_by_type(symbol, mt5.ORDER_TYPE_SELL)
                 
-                # เปิดโพซิชั่นซื้อใหม่
                 order_type = mt5.ORDER_TYPE_BUY
                 price = tick.ask
                 
             elif action.lower() == "sell":
-                # ถ้าเป็นคำสั่งขาย และมีโพซิชั่นซื้ออยู่ ให้ปิดโพซิชั่นซื้อทั้งหมดก่อน
                 buy_positions = [p for p in self.get_positions(symbol) if p.type == mt5.ORDER_TYPE_BUY]
                 if buy_positions:
                     logger.info(f"Closing all buy positions for {symbol} before opening sell")
                     self.close_all_positions_by_type(symbol, mt5.ORDER_TYPE_BUY)
                 
-                # เปิดโพซิชั่นขายใหม่
                 order_type = mt5.ORDER_TYPE_SELL
                 price = tick.bid
                 
             elif action.lower() == "close":
-                # ปิดโพซิชั่นตาม volume ที่ระบุ
                 logger.info(f"Closing {volume} lots for {symbol}")
                 closed = self.close_position_by_volume(symbol, volume)
                 return {"action": "close", "closed_positions": closed, "volume": volume}
@@ -194,7 +186,6 @@ class MT5Handler:
                 logger.error(f"Unknown action: {action}")
                 return None
             
-            # สร้างคำสั่งซื้อ/ขาย
             request = {
                 "action": mt5.TRADE_ACTION_DEAL,
                 "symbol": symbol,
@@ -205,16 +196,14 @@ class MT5Handler:
                 "magic": 0,
                 "comment": f"{action.upper()} order",
                 "type_time": mt5.ORDER_TIME_GTC,
-                "type_filling": mt5.ORDER_FILLING_IOC,
+                "type_filling": mt5.ORDER_FILLING_FOK,
             }
             
-            # เพิ่ม stop loss และ take profit ถ้ามี
             if stop_loss:
                 request["sl"] = float(stop_loss)
             if take_profit:
                 request["tp"] = float(take_profit)
             
-            # ส่งคำสั่ง
             result = mt5.order_send(request)
             
             if result.retcode == mt5.TRADE_RETCODE_DONE:
